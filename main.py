@@ -7,22 +7,62 @@ from urllib.parse import parse_qs
 import time
 import json
 import random
-
+import math
 import prefs
 
 
 DATA = { # Add some more data that might be useful here
 	"speed": {"val":0, "min":0, "max":90, "unit": "Km/h"},
 	"accelerator_pedal": {"val":0, "min":0, "max":100, "unit": "%"},
-	"brake-pressure": {"val":0, "min":90, "max":130, "unit": "Pa"}
+	"brake_pressure": {"val":90, "min":90, "max":130, "unit": "Pa"},
+	"warning_code": {"val":0, "min":0, "max":256, "unit": "WARN"},
+	"can_fault_code": {"val":0, "min":0, "max":256, "unit": "WARN"},
+	"bms_fault_code": {"val":0, "min":0, "max":256, "unit": "WARN"},
+	
+	"battery_cell_soc_1": {"val":0, "min":0, "max":100, "unit": "%"},
+	"battery_cell_soc_2": {"val":0, "min":0, "max":100, "unit": "%"},
+	"battery_cell_soc_3": {"val":0, "min":0, "max":100, "unit": "%"},
+	"battery_cell_soc_4": {"val":0, "min":0, "max":100, "unit": "%"},
+	"battery_cell_soc_5": {"val":0, "min":0, "max":100, "unit": "%"},
+	"battery_cell_soc_6": {"val":0, "min":0, "max":100, "unit": "%"},
+	"battery_cell_soc_7": {"val":0, "min":0, "max":100, "unit": "%"},
+
+	"battery_cell_temp_1": {"val":0, "min":19, "max":40, "unit": "C"},
+	"battery_cell_temp_2": {"val":0, "min":19, "max":40, "unit": "C"},
+	"battery_cell_temp_3": {"val":0, "min":19, "max":40, "unit": "C"},
+	"battery_cell_temp_4": {"val":0, "min":19, "max":40, "unit": "C"},
+	"battery_cell_temp_5": {"val":0, "min":19, "max":40, "unit": "C"},
+	"battery_cell_temp_6": {"val":0, "min":19, "max":40, "unit": "C"},
+	"battery_cell_temp_7": {"val":0, "min":19, "max":40, "unit": "C"},
+
+	"motor_coil_temp_1": {"val":0, "min":19, "max":40, "unit": "C"},
+	"motor_coil_temp_2": {"val":0, "min":19, "max":40, "unit": "C"},
+	"motor_coil_temp_3": {"val":0, "min":19, "max":40, "unit": "C"},
+
+	"motor_coil_current_1": {"val":0, "min":0, "max":40, "unit": "Amps"},
+	"motor_coil_current_2": {"val":0, "min":0, "max":40, "unit": "Amps"},
+	"motor_coil_current_3": {"val":0, "min":0, "max":40, "unit": "Amps"},
+
+	"bms_status": {"val": 0,  "min":0, "max":3, "keys":{ 0:"OK", 1:"Temperature Warning", 2:"Battery Pack Pressure Warning", 3:"System Offline"}},
+	"mcu_status": {"val": 0,  "min":0, "max":3, "keys":{ 0:"OK", 1:"APPS not connected", 2:"Motor not responding", 3:"High Voltage Fault"}},
+	"vcu_status": {"val": 0,  "min":0, "max":3, "keys":{ 0:"OK", 1:"APPS not connected", 2:"MCU not responding", 3:"High Voltage Offline"}},
 }
+
+NO_INCREMENT = ("vcu_status", "mcu_status", "vcu_status")
 
 def data_gen():
 	for d in DATA:
-		if DATA[d]["val"]<DATA[d]["max"]:
-			DATA[d]["val"]=DATA[d]["val"]+random.random()*10
+		if d in NO_INCREMENT:
+			if random.random()>0.99: # 99% chance that this data won't change
+				if DATA[d]["val"]<DATA[d]["max"]:
+					DATA[d]["val"]=DATA[d]["val"]+ math.floor(random.random()*10)%(DATA[d]["max"]-DATA[d]["min"])
+				else:
+					DATA[d]["val"] = DATA[d]["min"]
 		else:
-			DATA[d]["val"] = DATA[d]["min"]
+			if DATA[d]["val"]<DATA[d]["max"]:
+				DATA[d]["val"]=DATA[d]["val"]+random.random()*10
+			else:
+				DATA[d]["val"] = DATA[d]["min"]
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
 		def do_GET(self):
