@@ -6,15 +6,23 @@ from os import curdir, sep
 from urllib.parse import parse_qs
 import time
 import json
+import random
 
 import prefs
 
 
 DATA = { # Add some more data that might be useful here
-	"speed": 123,
-	"accelerator_pedal": 255,
-	"brake-pressure": 98
+	"speed": {"val":0, "min":0, "max":90, "unit": "Km/h"},
+	"accelerator_pedal": {"val":0, "min":0, "max":100, "unit": "%"},
+	"brake-pressure": {"val":0, "min":90, "max":130, "unit": "Pa"}
 }
+
+def data_gen():
+	for d in DATA:
+		if DATA[d]["val"]<DATA[d]["max"]:
+			DATA[d]["val"]=DATA[d]["val"]+random.random()*10
+		else:
+			DATA[d]["val"] = DATA[d]["min"]
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
 		def do_GET(self):
@@ -39,6 +47,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 				self.end_headers()
 				self.wfile.write(content)
 			elif "/api/data" in self.path: # send data
+				data_gen()
 				self.send_response(200)
 				PAGE = json.dumps(DATA)
 				self.send_header('Content-Type', 'text/html')
