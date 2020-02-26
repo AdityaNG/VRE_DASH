@@ -43,22 +43,6 @@ Feel free to look to actual dash boards like Tesla or Ather for ideas. Think abo
 
 Keep in mind, the dash will be a smartphone in horizontal orientation and with touch inputs.
 
-# Project Structure
-
-```mermaid 
-sequenceDiagram
-User ->> Dash Web Browser: Starts Dash
-Dash Web Browser ->> Server: Requests index.html
-Server ->> Dash Web Browser: Returns index.html
-Server ->> Dash Web Browser: Returns index.js
-Dash Web Browser ->> Server: (index.js)Requests /api/data
-Server ->> Embedded Controller: Requests latest data
-Embedded Controller ->> Server: Returns latest telemetry
-Server ->> Dash Web Browser: Returns latest telemetry
-Dash Web Browser ->> User: Displays the data
-```
-Put in simple terms, the Web App you will be working on will fetch data from `/api/data` and display it in a horizontal format with touch inputs
-
 ## Getting Started
 1. Run ```python3 main.py```
 
