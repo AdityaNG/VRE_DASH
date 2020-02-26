@@ -35,7 +35,9 @@ Feel free to make changes to index.html and index.js and add/remove files from t
 
 ### Inputs and Pages
 
-You may add inputs like buttons or menus to switch between different pages of the app.
+You may add inputs like buttons or menus to switch between different menus of the app.
+
+Note that the entire web app should be built within one HTML page (single-page web app).
 
 Data like speed, battery, warnings, etc should be on a main screen; while data like CAN Faults, BMS Faults, accelerator_pedal, break_pressure, steering angle, etc. should be show in one or more auxiliary menus.
 
@@ -44,10 +46,12 @@ Feel free to look to actual dash boards like Tesla or Ather for ideas. Think abo
 Keep in mind, the dash will be a smartphone in horizontal orientation and with touch inputs.
 
 ## Getting Started
-1. Run ```python3 main.py```
+1. clone this repo
 
-2. Open  [http://localhost:8081/](http://localhost:8081/)  in web browser. You should see the data from the python server getting printed on the screen and the Javascript console
-3. Make changes to the HTML / Js code and refresh to see changes
+2. Run ```python3 main.py```
+
+3. Open  [http://localhost:8081/](http://localhost:8081/)  in web browser. You should see the data from the python server getting printed on the screen and the Javascript console
+4. Make changes to the HTML / Js code and refresh to see changes
 
 ## Data List
 A full list of all the data that you will get from `/api/data`. Note that the `val` in the data is randomly generated on the fly.
