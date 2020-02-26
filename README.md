@@ -45,7 +45,7 @@ Keep in mind, the dash will be a smartphone in horizontal orientation and with t
 
 # Project Structure
 
-```mermaid_ 
+```mermaid 
 sequenceDiagram
 User ->> Dash Web Browser: Starts Dash
 Dash Web Browser ->> Server: Requests index.html
