@@ -46,7 +46,7 @@ Feel free to look to actual dash boards like Tesla or Ather for ideas. Think abo
 Keep in mind, the dash will be a smartphone in horizontal orientation and with touch inputs.
 
 ## Getting Started
-1. clone this repo
+1. Clone this repo
 
 2. Run ```python3 main.py```
 
